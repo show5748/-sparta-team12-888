@@ -1,16 +1,11 @@
 package com.example.intermediate.domain;
 
+import com.example.intermediate.shared.UserAuthority;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.Objects;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import javax.persistence.*;
+
+import lombok.*;
 import org.hibernate.Hibernate;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -19,7 +14,17 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@Setter
 public class Member extends Timestamped {
+
+  @Builder
+  public Member(String nickname, String Password, String email, UserAuthority role, Long kakaoId){
+    this.nickname = nickname;
+    this.password = Password;
+    this.email = email;
+    this.role = role;
+    this.kakaoId = kakaoId;
+  }
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,6 +36,19 @@ public class Member extends Timestamped {
   @Column(nullable = false)
   @JsonIgnore
   private String password;
+
+  @Column(nullable = false, unique = true)
+  private String email;
+
+  @Column(nullable = false)
+  @Enumerated(value = EnumType.STRING)
+  private UserAuthority role;
+
+  @Column(unique = true)
+  private Long kakaoId;
+
+
+
 
   @Override
   public boolean equals(Object o) {

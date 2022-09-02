@@ -6,9 +6,7 @@ import com.example.intermediate.domain.UserDetailsImpl;
 import com.example.intermediate.controller.response.ResponseDto;
 import com.example.intermediate.controller.request.TokenDto;
 import com.example.intermediate.repository.RefreshTokenRepository;
-import com.example.intermediate.service.UserDetailsServiceImpl;
-import com.example.intermediate.shared.Authority;
-import io.jsonwebtoken.Claims;
+import com.example.intermediate.shared.UserAuthority;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.MalformedJwtException;
@@ -18,20 +16,14 @@ import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.SecurityException;
 import java.security.Key;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.Date;
 import java.util.Optional;
-import java.util.stream.Collectors;
+
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -62,7 +54,7 @@ public class TokenProvider {
     Date accessTokenExpiresIn = new Date(now + ACCESS_TOKEN_EXPIRE_TIME);
     String accessToken = Jwts.builder()
         .setSubject(member.getNickname())
-        .claim(AUTHORITIES_KEY, Authority.ROLE_MEMBER.toString())
+        .claim(AUTHORITIES_KEY, UserAuthority.USER.toString())
         .setExpiration(accessTokenExpiresIn)
         .signWith(key, SignatureAlgorithm.HS256)
         .compact();
@@ -75,7 +67,7 @@ public class TokenProvider {
     RefreshToken refreshTokenObject = RefreshToken.builder()
         .id(member.getId())
         .member(member)
-        .value(refreshToken)
+        .keyValue(refreshToken)
         .build();
 
     refreshTokenRepository.save(refreshTokenObject);
