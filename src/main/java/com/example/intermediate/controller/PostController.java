@@ -45,4 +45,10 @@ public class PostController {
     return postService.deletePost(id, request);
   }
 
+  @RequestMapping(value = "/api/auth/post/heart/{id}", method = RequestMethod.POST)
+  public ResponseDto<?> heartPost(@PathVariable Long id,
+                                   HttpServletRequest request) {
+    return postService.heartPost(id, request);
+  }
+
 }

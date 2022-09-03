@@ -30,7 +30,7 @@ public class Comment extends Timestamped {
   @ManyToOne(fetch = FetchType.LAZY)
   private Post post;
 
-  @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+  @OneToMany(mappedBy="comment", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
   private List<CommentHeart> commentHearts;
 
   @Column(nullable = false)
@@ -42,5 +42,9 @@ public class Comment extends Timestamped {
 
   public boolean validateMember(Member member) {
     return !this.member.equals(member);
+  }
+
+  public int getHeartNumber(){
+    return commentHearts.size();
   }
 }

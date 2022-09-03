@@ -35,10 +35,10 @@ public class Post extends Timestamped {
   @Column(nullable = false)
   private String content;
 
-  @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+  @OneToMany(mappedBy="post", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
   private List<Comment> comments;
 
-  @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+  @OneToMany(mappedBy="post", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
   private List<PostHeart> postHearts;
 
   @JoinColumn(name = "member_id", nullable = false)
@@ -52,6 +52,10 @@ public class Post extends Timestamped {
 
   public boolean validateMember(Member member) {
     return !this.member.equals(member);
+  }
+
+  public int getHeartNumber(){
+    return postHearts.size();
   }
 
 }
