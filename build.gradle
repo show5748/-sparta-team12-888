@@ -28,34 +28,14 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
-    runtimeOnly 'com.h2database:h2'
-
-//    S3이미지 등록
-    implementation group: 'io.awspring.cloud', name: 'spring-cloud-starter-aws', version: '2.4.2'
-
-//S3
-
-    implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
-
 //     JWT
     compileOnly group: 'io.jsonwebtoken', name: 'jjwt-api', version: '0.11.2'
     runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-impl', version: '0.11.2'
     runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-jackson', version: '0.11.2'
-//스프링 시큐리티
-    implementation 'org.springframework.boot:spring-boot-starter-security'
-
-//회원가입, 로그인할 때 유효성 검사 편리하게 할 수 있다.
-    implementation 'org.springframework.boot:spring-boot-starter-validation'
-
 
 //     validation
     implementation 'org.springframework.boot:spring-boot-starter-validation'
 
-//oauth 로그인
-    //oauth 로그인
-    implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
-
-    implementation 'com.google.code.gson:gson:2.9.0'
 }
 
 tasks.named('test') {
