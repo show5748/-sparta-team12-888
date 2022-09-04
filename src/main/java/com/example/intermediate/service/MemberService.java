@@ -1,7 +1,9 @@
 package com.example.intermediate.service;
 
 import com.example.intermediate.controller.response.MemberResponseDto;
+import com.example.intermediate.controller.response.MyPageResponseDto;
 import com.example.intermediate.domain.Member;
+import com.example.intermediate.domain.Post;
 import com.example.intermediate.domain.RefreshToken;
 import com.example.intermediate.controller.request.LoginRequestDto;
 import com.example.intermediate.controller.request.MemberRequestDto;
@@ -9,9 +11,13 @@ import com.example.intermediate.controller.response.ResponseDto;
 import com.example.intermediate.controller.request.TokenDto;
 import com.example.intermediate.jwt.TokenProvider;
 import com.example.intermediate.repository.MemberRepository;
+
+import java.util.List;
 import java.util.Optional;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import com.example.intermediate.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -25,7 +31,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class MemberService {
 
   private final MemberRepository memberRepository;
-
+  private final PostRepository postRepository;
   private final PasswordEncoder passwordEncoder;
 //  private final AuthenticationManagerBuilder authenticationManagerBuilder;
   private final TokenProvider tokenProvider;
@@ -122,6 +128,37 @@ public class MemberService {
 
     return tokenProvider.deleteRefreshToken(member);
   }
+  public ResponseDto<?> myPage(HttpServletRequest request){
+    if (null == request.getHeader("Refresh-Token")) {
+      return ResponseDto.fail("MEMBER_NOT_FOUND",
+              "로그인이 필요합니다.");
+    }
+
+    if (null == request.getHeader("Authorization")) {
+      return ResponseDto.fail("MEMBER_NOT_FOUND",
+              "로그인이 필요합니다.");
+    }
+
+    Member member = validateMember(request);
+    if (null == member) {
+      return ResponseDto.fail("INVALID_TOKEN", "Token이 유효하지 않습니다.");
+    }
+
+    List<Post> postList =  postRepository.findPostsByMember(member);
+
+    int totalHeartNumber = 0;
+    for(Post post : postList){
+      totalHeartNumber += post.getHeartNumber();
+    }
+
+    return ResponseDto.success(MyPageResponseDto.builder()
+            .nickname(member.getNickname())
+            .totalHeartNumber(totalHeartNumber)
+            .totalPostNumber(postList.size())
+            .build()
+    );
+  }
+
 
   @Transactional(readOnly = true)
   public Member isPresentMember(String nickname) {
@@ -133,6 +170,14 @@ public class MemberService {
     response.addHeader("Authorization", "Bearer " + tokenDto.getAccessToken());
     response.addHeader("Refresh-Token", tokenDto.getRefreshToken());
     response.addHeader("Access-Token-Expire-Time", tokenDto.getAccessTokenExpiresIn().toString());
+  }
+
+  @Transactional
+  public Member validateMember(HttpServletRequest request) {
+    if (!tokenProvider.validateToken(request.getHeader("Refresh-Token"))) {
+      return null;
+    }
+    return tokenProvider.getMemberFromAuthentication();
   }
 
 }

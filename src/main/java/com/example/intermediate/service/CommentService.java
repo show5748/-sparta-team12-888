@@ -126,15 +126,7 @@ public class CommentService {
     }
 
     comment.update(requestDto);
-    return ResponseDto.success(
-        CommentResponseDto.builder()
-            .id(comment.getId())
-            .author(comment.getMember().getNickname())
-            .content(comment.getContent())
-            .createdAt(comment.getCreatedAt())
-            .modifiedAt(comment.getModifiedAt())
-            .build()
-    );
+    return ResponseDto.success("update success");
   }
 
   @Transactional
@@ -164,7 +156,7 @@ public class CommentService {
     }
 
     commentRepository.delete(comment);
-    return ResponseDto.success("success");
+    return ResponseDto.success("delete success");
   }
 
   @Transactional
@@ -202,7 +194,7 @@ public class CommentService {
       commentHeartRepository.delete(optionalCommentHeart.get());
     }
 
-    return ResponseDto.success("성공");
+    return ResponseDto.success("heart success");
 
   }
 

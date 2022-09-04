@@ -40,4 +40,9 @@ public class MemberController {
   public ResponseDto<?> logout(HttpServletRequest request) {
     return memberService.logout(request);
   }
+
+  @RequestMapping(value = "/api/auth/member/mypage",method = RequestMethod.GET)
+  public ResponseDto<?> myPage(HttpServletRequest request){
+    return memberService.myPage(request);
+  }
 }
