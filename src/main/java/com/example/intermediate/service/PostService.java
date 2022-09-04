@@ -88,20 +88,37 @@ public class PostService {
 
     return ResponseDto.success(
         PostResponseDto.builder()
-            .id(post.getId())
-            .title(post.getTitle())
-            .content(post.getContent())
-            .commentResponseDtoList(commentResponseDtoList)
-            .author(post.getMember().getNickname())
-            .createdAt(post.getCreatedAt())
-            .modifiedAt(post.getModifiedAt())
-            .build()
+                .id(post.getId())
+                .title(post.getTitle())
+                .content(post.getContent())
+                .commentResponseDtoList(commentResponseDtoList)
+                .author(post.getMember().getNickname())
+                .heart(post.getHeartNumber())
+                .createdAt(post.getCreatedAt())
+                .modifiedAt(post.getModifiedAt())
+                .build()
     );
   }
 
   @Transactional(readOnly = true)
   public ResponseDto<?> getAllPost() {
-    return ResponseDto.success(postRepository.findAllByOrderByModifiedAtDesc());
+    List<Post> postList = postRepository.findAllByOrderByModifiedAtDesc();
+    List<PostResponseDto> postResponseDtoList = new ArrayList<>();
+
+    for(Post post : postList){
+      postResponseDtoList.add(
+              PostResponseDto.builder()
+                      .id(post.getId())
+                      .title(post.getTitle())
+                      .content(post.getContent())
+                      .author(post.getMember().getNickname())
+                      .heart(post.getHeartNumber())
+                      .createdAt(post.getCreatedAt())
+                      .modifiedAt(post.getModifiedAt())
+                      .build()
+      );
+    }
+    return ResponseDto.success(postResponseDtoList);
   }
 
   @Transactional
@@ -159,10 +176,7 @@ public class PostService {
     if (post.validateMember(member)) {
       return ResponseDto.fail("BAD_REQUEST", "작성자만 삭제할 수 있습니다.");
     }
-//    List<PostHeart> postHearts = postHeartRepository.findAllByPost(post);
-//    for(PostHeart postHeart : postHearts){
-//      postHeartRepository.delete(postHeart);
-//    }
+
     postRepository.delete(post);
     return ResponseDto.success("delete success");
   }
