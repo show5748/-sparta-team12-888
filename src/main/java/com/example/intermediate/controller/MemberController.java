@@ -43,8 +43,8 @@ public class MemberController {
     }
 
     @GetMapping("/user/kakao/callback")
-    public String kakaoLogin(@RequestParam String code) throws JsonProcessingException {
-        kakaoUserService.kakaoLogin(code);
+    public String kakaoLogin(@RequestParam String code, HttpServletResponse response) throws JsonProcessingException {
+        kakaoUserService.kakaoLogin(code, response);
         return "redirect:/";
     }
 }
