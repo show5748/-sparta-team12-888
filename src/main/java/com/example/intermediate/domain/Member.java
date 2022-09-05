@@ -29,9 +29,14 @@ public class Member extends Timestamped {
   private String nickname;
 
   @Column(nullable = false)
+  private String name;
+  @Column(nullable = false)
   @JsonIgnore
   private String password;
 
+  public void setName(String name){
+    this.name = name;
+  }
   @Override
   public boolean equals(Object o) {
     if (this == o) {

@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class MyPageResponseDto {
-    private String nickname;
+    private String name;
     private int totalHeartNumber;
     private int totalPostNumber;
 

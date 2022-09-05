@@ -2,6 +2,7 @@ package com.example.intermediate.controller;
 
 import com.example.intermediate.controller.request.LoginRequestDto;
 import com.example.intermediate.controller.request.MemberRequestDto;
+import com.example.intermediate.controller.request.NameRequestDto;
 import com.example.intermediate.controller.response.ResponseDto;
 import com.example.intermediate.service.MemberService;
 import javax.servlet.http.HttpServletRequest;
@@ -44,5 +45,10 @@ public class MemberController {
   @RequestMapping(value = "/api/auth/member/mypage",method = RequestMethod.GET)
   public ResponseDto<?> myPage(HttpServletRequest request){
     return memberService.myPage(request);
+  }
+
+  @RequestMapping(value = "/api/auth/member/name", method = RequestMethod.POST)
+  public ResponseDto<?> updateName(@RequestBody NameRequestDto requestDto, HttpServletRequest request) {
+    return memberService.updateName(requestDto, request);
   }
 }

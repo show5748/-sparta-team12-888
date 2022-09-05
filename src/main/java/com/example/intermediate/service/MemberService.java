@@ -1,5 +1,6 @@
 package com.example.intermediate.service;
 
+import com.example.intermediate.controller.request.NameRequestDto;
 import com.example.intermediate.controller.response.MemberResponseDto;
 import com.example.intermediate.controller.response.MyPageResponseDto;
 import com.example.intermediate.domain.Member;
@@ -40,7 +41,7 @@ public class MemberService {
   public ResponseDto<?> createMember(MemberRequestDto requestDto) {
     if (null != isPresentMember(requestDto.getNickname())) {
       return ResponseDto.fail("DUPLICATED_NICKNAME",
-          "중복된 닉네임 입니다.");
+          "중복된 ID 입니다.");
     }
 
     if (!requestDto.getPassword().equals(requestDto.getPasswordConfirm())) {
@@ -50,13 +51,16 @@ public class MemberService {
 
     Member member = Member.builder()
             .nickname(requestDto.getNickname())
-                .password(passwordEncoder.encode(requestDto.getPassword()))
-                    .build();
+            .name(requestDto.getName())
+            .password(passwordEncoder.encode(requestDto.getPassword()))
+            .build();
     memberRepository.save(member);
+
     return ResponseDto.success(
         MemberResponseDto.builder()
             .id(member.getId())
             .nickname(member.getNickname())
+                .name(member.getName())
             .createdAt(member.getCreatedAt())
             .modifiedAt(member.getModifiedAt())
             .build()
@@ -86,6 +90,7 @@ public class MemberService {
         MemberResponseDto.builder()
             .id(member.getId())
             .nickname(member.getNickname())
+                .name(member.getName())
             .createdAt(member.getCreatedAt())
             .modifiedAt(member.getModifiedAt())
             .build()
@@ -152,11 +157,32 @@ public class MemberService {
     }
 
     return ResponseDto.success(MyPageResponseDto.builder()
-            .nickname(member.getNickname())
+            .name(member.getName())
             .totalHeartNumber(totalHeartNumber)
             .totalPostNumber(postList.size())
             .build()
     );
+  }
+
+  @Transactional
+  public ResponseDto<?> updateName(NameRequestDto nameRequestDto, HttpServletRequest request){
+    if (null == request.getHeader("Refresh-Token")) {
+      return ResponseDto.fail("MEMBER_NOT_FOUND",
+              "로그인이 필요합니다.");
+    }
+
+    if (null == request.getHeader("Authorization")) {
+      return ResponseDto.fail("MEMBER_NOT_FOUND",
+              "로그인이 필요합니다.");
+    }
+
+    Member member = validateMember(request);
+    if (null == member) {
+      return ResponseDto.fail("INVALID_TOKEN", "Token이 유효하지 않습니다.");
+    }
+    memberRepository.findByNickname(member.getNickname()).get().setName(nameRequestDto.getName());
+    return ResponseDto.success("update name");
+
   }
 
 
