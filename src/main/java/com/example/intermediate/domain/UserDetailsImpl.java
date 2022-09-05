@@ -1,6 +1,6 @@
 package com.example.intermediate.domain;
 
-import com.example.intermediate.shared.Authority;
+import com.example.intermediate.shared.UserAuthority;
 import java.util.ArrayList;
 import java.util.Collection;
 import lombok.AllArgsConstructor;
@@ -19,7 +19,7 @@ public class UserDetailsImpl implements UserDetails {
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
-    SimpleGrantedAuthority authority = new SimpleGrantedAuthority(Authority.ROLE_MEMBER.toString());
+    SimpleGrantedAuthority authority = new SimpleGrantedAuthority(UserAuthority.USER.toString());
     Collection<GrantedAuthority> authorities = new ArrayList<>();
     authorities.add(authority);
     return authorities;
