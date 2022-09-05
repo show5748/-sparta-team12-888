@@ -77,6 +77,7 @@ public class SecurityConfiguration {
 
     return http.build();
   }
+
   // CORS 허용 적용
   @Bean
   public CorsConfigurationSource corsConfigurationSource() {
