@@ -86,6 +86,8 @@ public class SecurityConfiguration {
     //configuration.addAllowedOrigin("*");
     configuration.addAllowedHeader("*");
     configuration.addAllowedMethod("*");
+    configuration.addExposedHeader("Authorization");
+    configuration.addExposedHeader("Refresh-Token");
     configuration.setAllowCredentials(true);
 
     UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
