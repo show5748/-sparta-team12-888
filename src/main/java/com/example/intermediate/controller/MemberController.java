@@ -52,5 +52,9 @@ public class MemberController {
   public ResponseDto<?> updateName(@RequestBody NameRequestDto requestDto, HttpServletRequest request) {
     return memberService.updateName(requestDto, request);
   }
-
+  
+  @GetMapping("/user/kakao/callback")
+  public ResponseDto<?> kakaoLogin(@RequestParam String code, HttpServletResponse response) throws JsonProcessingException {
+    return kakaoUserService.kakaoLogin(code, response);
+  }
 }
