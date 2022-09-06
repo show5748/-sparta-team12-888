@@ -44,10 +44,9 @@ public class Post extends Timestamped {
   @OneToOne
   private ImageMapper image;
 
-  public void update(PostRequestDto postRequestDto, ImageMapper image) {
+  public void update(PostRequestDto postRequestDto) {
     this.title = postRequestDto.getTitle();
     this.content = postRequestDto.getContent();
-    this.image = image;
   }
 
   public boolean validateMember(Member member) {
