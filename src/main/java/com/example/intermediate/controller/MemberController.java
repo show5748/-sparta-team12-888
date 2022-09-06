@@ -53,13 +53,4 @@ public class MemberController {
     return memberService.updateName(requestDto, request);
   }
 
-
-  @GetMapping("/user/kakao/callback")
-  public ResponseDto<?> kakaoLogin(@RequestParam String code, HttpServletResponse response) throws JsonProcessingException {
-//    try { // 회원가입 진행 성공시
-    return kakaoUserService.kakaoLogin(code, response);
-//    } catch (Exception e) { // 에러나면 false
-//      throw new CustomException(ErrorCode.INVALID_KAKAO_LOGIN_ATTEMPT);
-  }
-
 }
