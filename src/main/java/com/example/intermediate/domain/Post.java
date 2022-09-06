@@ -40,10 +40,14 @@ public class Post extends Timestamped {
   @JoinColumn(name = "member_id", nullable = false)
   @ManyToOne(fetch = FetchType.LAZY)
   private Member member;
+  
+  @OneToOne
+  private ImageMapper image;
 
-  public void update(PostRequestDto postRequestDto) {
+  public void update(PostRequestDto postRequestDto, ImageMapper image) {
     this.title = postRequestDto.getTitle();
     this.content = postRequestDto.getContent();
+    this.image = image;
   }
 
   public boolean validateMember(Member member) {
