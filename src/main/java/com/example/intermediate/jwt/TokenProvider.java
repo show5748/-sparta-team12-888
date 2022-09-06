@@ -75,7 +75,7 @@ public class TokenProvider {
     RefreshToken refreshTokenObject = RefreshToken.builder()
         .id(member.getId())
         .member(member)
-        .value(refreshToken)
+        .keyValue(refreshToken)
         .build();
 
     refreshTokenRepository.save(refreshTokenObject);

@@ -1,6 +1,5 @@
 package com.example.intermediate.controller.response;
 
-import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -10,10 +9,9 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class MemberResponseDto {
-  private Long id;
-  private String nickname;
-  private String name;
-  private LocalDateTime createdAt;
-  private LocalDateTime modifiedAt;
+public class MyPageResponseDto {
+    private String name;
+    private int totalHeartNumber;
+    private int totalPostNumber;
+
 }

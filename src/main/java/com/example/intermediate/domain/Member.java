@@ -32,6 +32,8 @@ public class Member extends Timestamped {
   private String name;
 
   @Column(nullable = false)
+  private String name;
+  @Column(nullable = false)
   @JsonIgnore
   private String password;
   
@@ -45,6 +47,9 @@ public class Member extends Timestamped {
   @Enumerated(value = EnumType.STRING)
   private UserAuthority role;
 
+  public void setName(String name){
+    this.name = name;
+  }
   @Override
   public boolean equals(Object o) {
     if (this == o) {
