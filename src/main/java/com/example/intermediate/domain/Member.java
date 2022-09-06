@@ -33,8 +33,6 @@ public class Member extends Timestamped {
   private String name;
 
   @Column(nullable = false)
-  private String name;
-  @Column(nullable = false)
   @JsonIgnore
   private String password;
   
