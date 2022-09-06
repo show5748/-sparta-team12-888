@@ -4,21 +4,22 @@ import com.example.intermediate.controller.request.LoginRequestDto;
 import com.example.intermediate.controller.request.MemberRequestDto;
 import com.example.intermediate.controller.request.NameRequestDto;
 import com.example.intermediate.controller.response.ResponseDto;
+import com.example.intermediate.service.KakaoUserService;
 import com.example.intermediate.service.MemberService;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
 @RestController
 public class MemberController {
 
   private final MemberService memberService;
+  private final KakaoUserService kakaoUserService;
 
   @RequestMapping(value = "/api/member/signup", method = RequestMethod.POST)
   public ResponseDto<?> signup(@RequestBody @Valid MemberRequestDto requestDto) {
@@ -51,4 +52,5 @@ public class MemberController {
   public ResponseDto<?> updateName(@RequestBody NameRequestDto requestDto, HttpServletRequest request) {
     return memberService.updateName(requestDto, request);
   }
+
 }

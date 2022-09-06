@@ -44,6 +44,9 @@ public class Post extends Timestamped {
   @JoinColumn(name = "member_id", nullable = false)
   @ManyToOne(fetch = FetchType.LAZY)
   private Member member;
+  
+  @OneToOne
+  private ImageMapper image;
 
   private String imgFileName;
 
