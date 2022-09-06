@@ -27,10 +27,23 @@ public class Member extends Timestamped {
 
   @Column(nullable = false)
   private String nickname;
+  
+  @Column(nullable = false)
+  private String name;
 
   @Column(nullable = false)
   @JsonIgnore
   private String password;
+  
+  @Column(nullable = false, unique = true)
+  private String email;
+
+  @Column(unique = true)
+  private Long kakaoId;
+
+  @Column(nullable = false)
+  @Enumerated(value = EnumType.STRING)
+  private UserAuthority role;
 
   @Override
   public boolean equals(Object o) {
